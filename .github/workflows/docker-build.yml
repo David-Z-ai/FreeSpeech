@@ -25,4 +25,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: david-z-ai/freespeech:latest
+        tags: davidzai/freespeech:latest
