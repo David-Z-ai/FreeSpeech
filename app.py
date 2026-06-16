@@ -6,7 +6,7 @@ import tempfile
 import soundfile as sf
 from flask import Flask, request, send_file, jsonify
 
-print("[LOG] Начало  загрузки модулей...")
+print("[LOG] Начало загрузки модулей...")
 
 try:
     from ruaccent import RUAccent
