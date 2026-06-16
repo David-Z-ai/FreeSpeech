@@ -1,6 +1,7 @@
 FROM nvidia/cuda:12.4.0-base-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PYTHONUNBUFFERED=1   # <--- ЭТО НОВОЕ
 
 RUN apt-get update && apt-get install -y \
     python3.10 \
@@ -38,4 +39,4 @@ COPY app.py .
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+CMD ["python", "/app/app.py"]
