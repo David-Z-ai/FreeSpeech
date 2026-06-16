@@ -89,7 +89,7 @@ def generate(text, out_path, ref_audio, ref_text=""):
         ref_file, ref_text_proc = preprocess_ref_audio_text(ref_audio, ref_text)
         wav, sr, _ = infer_process(
             ref_file, ref_text_proc, text_stress, model_obj, vocoder,
-            cross_fade_duration=0.15, nfe_step=64, speed=0.75, device=DEVICE
+            cross_fade_duration=0.15, nfe_step=64, speed=1, device=DEVICE
         )
         sf.write(out_path, wav, sr)
         print(f"[LOG] Аудио сохранено: {out_path}")
