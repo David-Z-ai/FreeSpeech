@@ -1,0 +1,15 @@
+torch==2.4.1+cu124
+torchaudio==2.4.1+cu124
+f5-tts
+soundfile
+ruaccent
+ru-normalizr
+transliterate
+sentencepiece
+num2words
+pymorphy2
+pymorphy2-dicts
+ipykernel
+transformers==4.46.3
+flask
+cached-path

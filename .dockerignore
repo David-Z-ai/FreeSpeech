@@ -1,0 +1,8 @@
+__pycache__
+*.pyc
+.git
+*.wav
+*.mp3
+README.md
+.gitignore
+.dockerignore
