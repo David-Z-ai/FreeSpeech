@@ -12,7 +12,7 @@
 
 ## Быстрый старт
 
-### 1. Собрать образ
+### 1.  Собрать образ
 
 ```bash
 docker build -t david-z-ai/freespeech:latest .
