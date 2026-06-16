@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
+    python3-dev \
     ffmpeg \
     git \
     wget \
@@ -13,16 +14,11 @@ RUN apt-get update && apt-get install -y \
 RUN ln -s /usr/bin/python3.10 /usr/bin/python
 RUN python -m pip install --upgrade pip
 
-RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
-    bash /tmp/miniconda.sh -b -p /opt/conda && \
-    rm /tmp/miniconda.sh
-ENV PATH="/opt/conda/bin:$PATH"
+# Устанавливаем PyTorch с CUDA 12.4
+RUN pip install torch==2.4.1+cu124 torchaudio==2.4.1+cu124 --index-url https://download.pytorch.org/whl/cu124
 
-RUN conda create -n f5tts python=3.10 -y
-
-RUN conda run -n f5tts pip install torch==2.4.1+cu124 torchaudio==2.4.1+cu124 --index-url https://download.pytorch.org/whl/cu124
-
-RUN conda run -n f5tts pip install \
+# Устанавливаем все остальные пакеты
+RUN pip install \
     f5-tts \
     soundfile \
     ruaccent \
@@ -34,11 +30,12 @@ RUN conda run -n f5tts pip install \
     pymorphy2-dicts \
     ipykernel \
     transformers==4.46.3 \
-    flask
+    flask \
+    cached-path
 
 WORKDIR /app
 COPY app.py .
 
 EXPOSE 5000
 
-CMD ["conda", "run", "--no-capture-output", "-n", "f5tts", "python", "app.py"]
+CMD ["python", "app.py"]
