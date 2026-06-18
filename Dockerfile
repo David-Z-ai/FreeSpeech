@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y \
 RUN ln -s /usr/bin/python3.10 /usr/bin/python
 RUN python -m pip install --upgrade pip
 
-# Устанавливаем PyTorch с CUDA 12.4
+# PyTorch с CUDA
 RUN pip install torch==2.4.1+cu124 torchaudio==2.4.1+cu124 --index-url https://download.pytorch.org/whl/cu124
 
-# Устанавливаем все остальные пакеты
+# Все пакеты для TTS + Jupyter
 RUN pip install \
     f5-tts \
     soundfile \
@@ -32,11 +32,13 @@ RUN pip install \
     ipykernel \
     transformers==4.46.3 \
     flask \
-    cached-path
+    cached-path \
+    jupyterlab   # <--- ЭТО НОВОЕ
 
 WORKDIR /app
 COPY app.py .
 
-EXPOSE 5000
+EXPOSE 8888   # <--- МЕНЯЕМ ПОРТ
 
-CMD ["python", "/app/app.py"]
+# Запускаем Jupyter Lab вместо Flask
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--NotebookApp.token='freespeech'"]
