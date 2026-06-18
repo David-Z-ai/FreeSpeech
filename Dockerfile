@@ -35,6 +35,7 @@ RUN pip install \
 
 WORKDIR /app
 COPY app.py .
+COPY app.ipynb .
 
 EXPOSE 8888
 
