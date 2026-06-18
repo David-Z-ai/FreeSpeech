@@ -80,24 +80,20 @@ except Exception as e:
 print("[LOG] ВСЕ КОМПОНЕНТЫ ЗАГРУЖЕНЫ. ЗАПУСК FLASK...")
 
 # ---------- Функция генерации ----------
-def generate(text, out_path, ref_audio, ref_text=""):
-    print(f"[LOG] Генерация для текста: {text[:50]}...")
-    try:
-        normalized_text = normalizer.normalize(text)
-        print(f"[LOG] Нормализовано: {normalized_text[:50]}...")
-        text_stress = accentizer.process_all(normalized_text) + ' '
-        ref_file, ref_text_proc = preprocess_ref_audio_text(ref_audio, ref_text)
-        wav, sr, _ = infer_process(
-            ref_file, ref_text_proc, text_stress, model_obj, vocoder,
-            cross_fade_duration=0.15, nfe_step=64, speed=1, device=DEVICE
-        )
-        sf.write(out_path, wav, sr)
-        print(f"[LOG] Аудио сохранено: {out_path}")
-        return normalized_text
-    except Exception as e:
-        print(f"[ERROR] Ошибка в generate: {e}")
-        traceback.print_exc()
-        raise
+def generate(text, out_path, ref_audio, ref_text="", speed=0.75, nfe_step=64, cross_fade=0.15):
+    normalized_text = normalizer.normalize(text)
+    print(f"Оригинал: {text}\nНормализовано: {normalized_text}")
+    text_stress = accentizer.process_all(normalized_text) + ' '
+    ref_file, ref_text_proc = preprocess_ref_audio_text(ref_audio, ref_text)
+    wav, sr, _ = infer_process(
+        ref_file, ref_text_proc, text_stress, model_obj, vocoder,
+        cross_fade_duration=cross_fade,
+        nfe_step=nfe_step,
+        speed=speed,
+        device=DEVICE
+    )
+    sf.write(out_path, wav, sr)
+    return normalized_text
 
 app = Flask(__name__)
 
